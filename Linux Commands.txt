@@ -27,11 +27,9 @@ options:
 - tail fileName.ext: It will display the last 10 lines of the specified file.
 - head fileName.ext: It will display the first 10 lines of the specified file.
 - tail/head -<N> fileName.ext: It will display the last/first 'N' lines of the specified file
-- tail -f <fileName.ext>: It is used to display the running/real-time logs.
 - I can combine tail & head commands to display the lines in the middle of the file i.e. tail -50 fileName.txt | head -10
-
-Note: I can use ls | tail/head
-
+- tail -f <fileName.ext>: It is used to display the running/real-time logs. where f represents 'follow-mode'.
+	
 whatis
 ------------
 This command is used to display a brief description of the Linux commands.
@@ -70,9 +68,7 @@ Piping
 - Multiple commands can be executed together by this piping concept.
 - '|' - Pipeline operator.
 
-Ex1: ls -l | wc -l
-EX2: ls -l | less
-Ex3: ls -l | head
+Ex : tail -1000f abc.log | grep '9148632599'
 
 tee
 ===========
@@ -133,59 +129,107 @@ ls -l *{.java,.py}
 
 less
 =============================
-[10:01 pm] Samarth B Kulkarni
+- This command is used to display the content of the file.
+- I need to use this command when the content of the file is in many pages & when I want to only see the content & don't wnat to edit it.
+- With the less command I can navigate up & down in the displayed content & I can also search the required text, which I cannot do using cat command, because it just displays & exits, so cat should be used only when the content of the file in around one or two pages.
 
-This command is used to display the content of the file.
-
-
-Syntax: less <FileName.ext>
-
+Syntax : less <File_Name.ext>
 
 options after doing less:
 
+- Shift+g : To move to the end of the file
+- gg : To move to the top of the file
 - pg dn key: To move the page down
 - pg up key: To move the page up
 - Upper arrow key: To move one line up
 - Down arrow key: To move one line down
-- home key: To move to the end of the file
-- end key To move to the top of the file
-- q key: to quit the less
+- :q : to quit the less
 
 
 How to search the required text after opening the displaying the file content
 -----------------------------------------------------------------------------
+For bottom to top search(Upward direction, preffered)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Type Shit+g
 - Type / to enter the search mode.
 - Then type the text to search & enter
-- type 'n' to go to the next match
-- type 'N' to go to the previous match
+- type 'n' to go to the next match(as per timing)
+- type 'N' to go to the previous match(as per timing)
+- For a new search again use /text
+- :q : to quit the less
 
+For top to botton search(Downward direction)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Type gg
+- Type ? to enter the search mode.
+- Then type the text to search & enter
+- type 'n' to go to the next match(as per timing)
+- type 'N' to go to the previous match(as per timing)
+- For a new search again use ?text
+- :q : to quit the less
 
 Note:
 
+- Drawback of the less command is the matching text on which the current control is, that will not be highlighted, so vim command can be used to overcome this.
 - The 'more' command is also the same the  as 'less' command, but after doing more will be able to navigate only in the forward direction, not in the backward direction, so the 'more' command is generally not used
 
 
+vim
+============
+- vim is a file reader & editor i.e it can used to read & also edit the file content
+
+syntax: vim fileName
+
+Read
+~~~~~~~~~
+Shift+g : Bot
+gg : Top
+down key : To move one line down
+up key : to move one line up.
+pg dn
+pg up
+:q to quit
+
+Search
+~~~~~~~~~~~~
+Bot to Up
+#############
+Shift+g
+/search text & Enter
+N for the previous match(as per the timing)
+n for next match(as per the timing)
+again /search for new search
+:q to quit
+
+
+Bot to Up
+#############
+gg
+
+Edit
+~~~~~~~~~~~
+'i' - To switch to insert mode from read mode.
+Type the text
+'esc'- To Escape
+:q - To quit
+:wq - To save & quit
+
+Note :
+- I can use :q! or :wq! to force the respective action.
+- It overcomes the drawback of current matching text highlight, which was found with less command.
+
 grep(global regular expression pattern)
 ============================================
-This command is used to search/match the required pattern in the file content
+- It is used for patter matching
+- This command is used to search display the lines from the file content, which are the conaining the the specified pattern.
 
 grep 'XYZ' fileName
 
 options
 ---------
-gerp -ic 'XYZ' fileName
+gerp -i 'XYZ' fileName
 
 -i : To ignore case
--c : To get the count of number of times the specified pattern is matching in the file.
-
-grep with regular expression
----------------------------------
-1. Display all the lines in the file that starts with 'java'
-grep '^java' fileName
-
-2. Display all the lines in the file that starts with '.log'
-grep '.log$' fileName
-
 
 matching multiple patterns
 ---------------------------
@@ -193,9 +237,15 @@ egrep '(ABC|DEF)' fileName
 
 gerp command can be used with other commands when they are giving some output i.e. piping
 ------------------------------------------------------------------------------------------
-ls -lrth | gerp '^.log'
-ls -lrth | grep 'ABC$'
 ls -lrth | grep 'ABC'
+
+also
+ls -lrth | grep '^ABC' to display the lines that starts with ABC
+ls -lrth | grep .'log$' to display the lines that ends with ABC
+ls -lrth | grep '^ABC*.log$' starts with ABC, inbetween any & ends with .log
+ls -lrth | grep '^ABC?.log$' ? IS USED
+
+Note : The search patter should be in quotes in grep command. even all the wildcards should be in quotes.
 
 date
 ============
@@ -203,26 +253,24 @@ This command is used to display the current date-time of the Linux machine
 
 Syntax: date
 
-Note:
-- Usually it will be UTC format
-- UTC+5:30 = IST
-
 ls(list)
 ==================
-ls - list
-It displays all the files & subdirectories present in the directory.
-
-options:
-1. ls: It displays all the files & subdirectories present in the current working directory.
-2. ls <DirectoryName: Relative/Absolute path> - It displays all the files & subdirectories present in the specified directory.
-3. ls -a: It displays all the files & subdirectories present in the current working directory including hidden files.
-4. ls *.txt: It displays all the files with extension.txt present in the current working directory i.e. * means anything so I can use it accordingly.
-5. ls -l or ll: It displays all the files & subdirectories present in the current working directory with details(permissions, size(Bytes), created date, etc...)
-6. ls -lh or ll -h: It displays all the files & subdirectories present in the current working directory with details(permissions, size(K,M, G), created date, etc...)
+Options
+---------
+- ls : To list the names of directories and files present in the working directory.
+- ls -l or ll : To long list the names of directories and files present in the working directory, along with premissions, users, groups, size(In Bytes), Moditication time ect..
+- ls -lh : The file/sub-directories sizes will be displayed in human readeable format i.e. KB, MB & GB.
+- ls -lth : The 't' option sorts the list/dir by modification time, with the newest files or directories appearing first.
+- ls-ltrh : lists/dir's files in reverse order of modification time with detailed information and human-readable file sizes
 
 Note :
-- I can also use ls -lah or ll -ah
-- Even i can use '?' wildcard character
+- ls - latrh : Includes hidden files as well.
+- The options used with ls need not to be in a particular order, any order is fine.
+
+I can used wild cards, but instaed of this grep is used along with ls -lrth)
+------------------------------------------------------------------
+ls -lrth *.java (* is any char, any times, it can be even emptys)
+ls -lrth *.lo? (? any single char, mandatory)
 
 
 rm(remove)
@@ -233,6 +281,8 @@ rm file1 file2 ...........
 2. To remove directory
 a. rm dir - To remove empty directory
 b. rm -r dir - To remove a directory with some content(files & subdirectories).
+
+Here 'r' is recursive
 
 mv(move)
 ===============
@@ -245,6 +295,8 @@ mv file1 file2 <Destination Dir>
 3. To move directoty
 mv scr_dir dist_dir
 
+Note : Here distination & source directory should exists. if not I will get "No such file or directory" error.
+
 cp(copy)
 ===================
 1. Basically, it is used to copy file/s from one directory to another.
@@ -256,38 +308,29 @@ cp -r dir1 dir2
 3. To copy the content of one file into another
 cp file1 file2(file 1 content will be copied to file2)(override)
 
+Note : If the distination file/directory doesn't exists & then cp command will create & do the other job. But source should be there.
 
 cat(catenate)
 ==============================================
-1. To create a new file with some content
-cat > Test.txt
-after this enter & then specify some text & ctrl+d to exit & then the file will be created.
 
-2. To display the content of the file
+1. To display the content of the file when the content is less if more other relevant command should be used.
 cat FileName.ext
 
-3. To concatenate & display the contents of the multiple files
+2. To concatenate & display the contents of the multiple files
 cat FileName.ext FileName.ext ......................
-
-4. To append data to the existing file
-cat >>FileName.ext
-after this enter & then specify some text & ctrl+d to exit & then the new data will be appended to the existing data.
-has context menu
-
 
 touch
 ==========================================
 This command is used to
-1. Create an empty file.
-2. Change the timestamp(Creation Date) of the existing file
+Create an empty file.
 
 Syntax : touch <FileName.ext>
 - It will create the file in the pwd, if the file is not present
 - If the file is already present then it will change the timestamp of the file.
 
 Note:
-I can also create a hidden file, where the File-Name has to begin with. (Ex: .Demo.txt)
-
+- File names should not have space.
+- I can also create a hidden file, where the File-Name has to begin with. (Ex: .Demo.txt)
 
 clear
 =======================
@@ -295,19 +338,21 @@ This command is used to clear the terminal screen
 
 Syntax: clear
 
-Note: This will not delete the content in the terminal, it just moves the content up.
-
+Note: 
+- This will not delete the content in the terminal, it just moves the content up.
+- 'cls' command works in some terminals where it actually clears the contents on the screen only.
 
 systemctl
 ===================
 The systemctl command is used to check & change the state of the system services.
+	
 
 Syntax:
 systemctl <Status/Start/Stop/Restart> <Service File Name>
 
 Note:
 - providing the extension i.e. .service along with the service file is not mandatory
-- The service file for all the system services will be in /etc/systemd/system path
+
 
 
 sudo(SuperUserDo)
@@ -322,10 +367,9 @@ Before: [centos@TSLEE-BE-02 ~]$
 After: [root@TSLEE-BE-02 centos]#
 
 Note:
+- $ represents normal user & # represents root/admin user
 - I need to use the 'exit' command to switch back to the previous user.
 - If I want to perform any action without switching to the root user, I Ian use 'sudo <mkdir sample>', then that action will be performed without the user switch.
-- $ represents normal user & # represents root/admin user
-
 
 man
 ================
@@ -350,19 +394,18 @@ Note:
 options
 -------------
 -e - used to display information(PID mainly) about running processes(initiated by all users)
--f - used to display information about running processes(initiated by current user) in a detailed format(PPID manily).
-
+-f - used to display information about running processes(initiated by current user) in a detailed format(PPID, CPU & memeory usage etc..)
 Note : ps PID :  will display information about specified process.
 
 
 kill
 =============
-The foreround process can be killed by ctrl+c, but to kill background process running i need to use 'kill' process
+The foreround process(tail -f) can be killed by ctrl+c, but to kill background process running i need to use 'kill' command.
 
 syntax : kill <PID1 PID2,...>
 
 Note: 
-If a kill parent process, then child will also gets killed
+If I kill parent process, then child will also gets killed
 
 
 roles & permissions
@@ -373,9 +416,11 @@ group(g) (All the people who are part of the group, in which owner is part of)
 others(o) (All the other users)
 
 There will be three types of permission that each user can have
-Read (r): The read permission allows a user to view the contents of a file or the list of files in a directory.
+Read (r): The read permission allows a user to view the contents of a file and list files/directories,
 write(w) : The write perrmission allows user to add, modify & delete the file & directories
-Execute (x): The execute permission is primarily associated with files and determines if the file can be executed as a program or script. For directories, the execute permission allows a user to access or traverse the directory. Without execute permission, a directory cannot be entered even if the user has read or write permissions on it
+Execute (x): The execute permission is primarily associated with files and determines if the file can be executed as a program or script. For directories, the execute permission allows a user to access or traverse the directory. Without execute permission, a directory cannot be entered(cd command) even if the user has read or write permissions on it
+
+Ex : -rw-r-----    for user, groups & others
 
 Ex1: file : -rwxrw-r--
 Ex2: directory : drwxrw-r--
@@ -390,7 +435,7 @@ so for 'rwxrw-r--' : 764
 
 chmod(change mode)
 ======================
-This command is used to change the access permissions of files & directories.
+This command is used to change the access permissions of user for files & directories.
 
 I can use chmod command in two ways
 a. Symbolic method
@@ -398,17 +443,20 @@ b. Numeric method
 
 a. symbolic method
 -----------------------
-Adding permissions
+Adding new permissions
 ----------------------
 add 'x', 'wx' & 'r' permissions to the file/directory respectively for the u,g & o 
 chmod u+x,g+wx,o+r <filename/directory name>
+chmod u+x is also correct
 
-Removing permissions
+Removing existing permissions
 ----------------------
 remove 'x', 'wx' & 'r' permissions to the file/directory respectively for the u,g & o
 chmod u-x,g-wx,o-r <filename/directory name>
+chmod u-x is also can be done
 
-Note : i can use go-wx or go+wx, adding/removing w & x permissions for the g & o users
+Note : 
+- It's important to note that the provided command does not override existing permissions; instead, it adds or removes specific permissions.
 
 b. numeric method
 ------------------------
@@ -421,33 +469,20 @@ Here adding only read permissions to g & only read & execute permission to o.
 Ex3: chmod 700 <file/directory name>
 Here adding 7 & removing all permissions for g & o.
 
-Note: whenever i use the chmod command in numeric way the previous permissions will be overriden by the new permissions specified in the chmode command, but it is not in case of symbolic method
-
-
-vim
-============
-vim is a file editor.
-
-syntax: vim fileName
-
-options
-----------
-'i' - To insert
-'esc'- To Escape
-:q - To quit without saving
-:wq - To save & quit
-Note - I can use :q! or :wq! to force the respective action.
-shift + g - Bot of the file
-g - Top of the file
-pg up
-pg dn
-
-search options
---------------
-/search text
-n - Next match
-N - Previuos match
-
+Note: 
+- whenever i use the chmod command in numeric way the previous permissions will be overriden by the new permissions specified in the chmode command, but it is not in case of symbolic method
+- Every time we need to give all the three values it is suggested.
 
 df
 ===
+df command is used to display the disk space usage of the all the file systems avaliable.
+
+syntax:
+df [options]
+
+It works on system level not on the pwd level.
+
+- just df command will diplay the disk space usage of the all the file systems, where the data like size will not be in human readable format i.e. it will be in bytes.
+- df -h will display the disk space usage of the all the file systems in human readable format i.e. KB,MB & GB.
+
+
