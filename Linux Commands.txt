@@ -1,11 +1,25 @@
+* & ? - wild cards can be used in any arguments.
+^ starts with & $ ends with should be used only with grep command
+
 pwd(present working directory)
 --------------------------------
 It shows the absolute path of the current working directory.
 
+man
+================
+This command is used to display all the descriptions & options available with the specified Linux command.
+
+Syntax: man <Linux Command>
+
+whatis
+===========
+This command is used to display a brief description of the Linux commands.
+
+Options/Syntax: whatis <LinuxCommand>
 
 cd(change directory):
 ----------------------------
-This command is used to change the directory
+This command is used to change the present working directory or move from one directory to another.
 
 options
 - cd or cd ~ - Home directory of the current user i.e if the user is root then the home directory will be "root".
@@ -17,6 +31,117 @@ Note: If the directory name is having space then use "double quotes".
 
 - cd /............ - To absolute path to move any directory from the root directory.
 
+ls(list)
+==================
+Options
+---------
+- ls : To list the names of directories and files present in the working directory.
+- ls -l : To long list the names of directories and files present in the working directory, along with premissions, users, groups, size(In Bytes), Moditication date & time ect..
+- ls -lh : The file/sub-directories sizes will be displayed in human readeable format i.e. GB, MB & KB & Bytes.
+- ls -lht : The 't' option sorts the list/dir by modification time, with the newest files or directories appearing first.
+- ls-lhtr : lists/dir's files in reverse order of files & dir.
+
+Note :
+- ls - lhtra : Includes hidden files as well.
+- The options used with ls need not to be in a particular order, any order is fine.
+
+I can used wild cards, but instaed of this grep is used along with ls -lrth)
+---------------------------------------------------------------------------
+ls -lrth *.java (* is any char, any times, it can be even emptys)
+ls -lrth *.lo? (? any single char, mandatory)
+
+Note
+======
+drwxr-x---  2 comviva comviva    6 Feb  2 16:04 aggregrator
+-rw-rw-r--  1 comviva comviva  403 May 24 13:26 copy_kv.sh
+
+d - means dir & - means file.
+rwxr-x-- : Permissions
+
+user & group
+
+size
+
+last modified date & time
+
+rm(remove)
+=======================
+1. To remove files
+rm file1 file2 ...........
+rm -f : For force delete.
+
+2. To remove directory
+a. rm dir - To remove empty directory
+b. rm -r dir - To remove a directory with some content(files & subdirectories).
+
+Here 'r' is recursive
+rm -rf dir : For force delete
+
+mv(move)
+===============
+1. To rename files & directories.
+mv file_oldname file_newname
+Note : If the file_newname alreday exists, then the contents of the file_oldname will be moved to file_newname  & file_oldname will be deleted, so the file_newname should not exists if I want to rename.
+
+mv dir_old dir_new
+Note : If the dir_new exists then the dir_old will be moved into dir_new, else it will be renamed.
+
+2. To move files
+mv file1 file2 <Destination Dir>
+
+3. To move directoty
+mv scr_dir dist_dir
+
+Note : Here distination & source directory should exists. if not I will get "No such directory" error in case when working with different dir.
+
+cp(copy)
+===================
+1. Basically, it is used to copy file/s from one directory to another.
+cp file1.ext file2.ext <Destination Directory>
+
+2. To copy one dir into another
+cp -r dir1 dir2
+
+3. To copy the content of one file into another
+cp file1 file2(file 1 content will be copied to file2)(override)
+
+Note : If the distination file/directory doesn't exists & then cp command will create & do the the job. But source should be there.
+
+date
+============
+This command is used to display the current date-time of the Linux server.
+
+Syntax: date
+
+touch
+==========================================
+This command is used to create an empty file.
+
+Syntax : touch <FileName.ext>
+- It will create the file in the pwd, if the file is not present
+- If the file is already present then it will change the modification date-time timestamp of the file.
+
+Note:
+- File names should not have space.
+- I can also create a hidden file, where the File-Name has to begin with. (Ex: .Demo.txt)
+
+cat(catenate)
+==============================================
+1. To display the content of the file when the content is less if more other relevant command should be used.
+cat FileName.ext
+
+2. To concatenate & display the contents of the multiple files
+cat FileName.ext FileName.ext ......................
+
+clear
+=======================
+This command is used to clear the terminal screen
+
+Syntax: clear
+
+Note:
+- This will not delete the content in the terminal, it just moves the content up.
+- 'cls' command works in some terminals where it actually clears the contents on the screen only.
 
 tail & head
 -------------
@@ -29,103 +154,62 @@ options:
 - tail/head -<N> fileName.ext: It will display the last/first 'N' lines of the specified file
 - I can combine tail & head commands to display the lines in the middle of the file i.e. tail -50 fileName.txt | head -10
 - tail -f <fileName.ext>: It is used to display the running/real-time logs. where f represents 'follow-mode'.
-	
-whatis
-------------
-This command is used to display a brief description of the Linux commands.
+- tail -Nf <fileName.ext>
+- tail -f <FileNmae.ext> | grep 'something'
+- tail -Nf <FileNmae.ext> | grep 'something'
 
-Options/Syntax:
-whatis <LinuxCommand>
+Note : The tail -f commamd will not terminate on it's own, it is a continuous process.
 
-re-direction
-=====================
-output re-direction
-----------------------
-ls 1>output.txt
-- here 1 represents output re-direction and here it is optional
+sudo(SuperUserDo)
+=================================
+It gives the temporary Superuser/root user access to perform restricted actions or access restricted files.
 
-error re-direction
----------------------
-cal 15 2023 2>error.txt 
-- here 2 represents error re-direction and here it is mandatory.
+Note: The error when a normal user tries to perform restricted action or access the restricted files is "Permission denied".
 
-Note: 
-- use '>' to override the existing data in file, if i want to append then I need to use '>>'.
-- I can combine like this ls 1>output.txt 2>error.txt
+syntax: sudo -s
+Example:
+Before: [centos@TSLEE-BE-02 ~]$
+After: [root@TSLEE-BE-02 centos]#
 
-input re-direction
-----------------------
-It can also be done
-ls 0<input.txt
-- here 0 represents input re-direction and here it is optional
+Note:
+- $ represents normal user & # represents root/admin user
+- I need to use the 'exit' command to switch back to the previous user.
+- If I want to perform any action without switching to the root user, I Ian use 'sudo <mkdir sample>', then that action will be performed without the user switch.
 
-Note: I can combine input, output & error re-direction
-ls 0<input.txt 1>output.txt 2>error.txt
+ps(process)
+====================
+process is an instance of the running command or program(Shell script).
+Note: - Foreground & Background processes in linux
 
-Piping
-==================
-- Passing is concept by which I can pass the output from one command as an input to another command.
-- Multiple commands can be executed together by this piping concept.
-- '|' - Pipeline operator.
+The ps command in Linux is used to provide information(PID mainly) about currently running/active processes on the system
+syntax : ps -[options] [PID]
 
-Ex : tail -1000f abc.log | grep '9148632599'
+Note:
+- By default the ps command will display the running processes which are initaited by only current user.
 
-tee
-===========
-The output of one command can be sent as an input to two commands by using 'tee' command.
-Ex1: ls -l | tee output.txt | wc -l
-'tee' will send the output from ls to output.txt & wc.
+options
+-------------
+-a : used to display information(PID mainly) about running processes(initiated by all users)
+-e : Includes all the  kind of active processes in the system.
+-f - used to display information about running processes(initiated by current user) in a detailed format(PPID, CPU & memeory usage etc..)
 
-Ex2: ls -l | tee output.txt 
-copy & display on terminal
+so use ps -aef or ps -ef
+ps -ef | grep 'something'
 
+Note : ps PID :  will display information about specified process.
 
-xargs
-==============
-If I want to pass the output received from one command as an argument(s) not as standard input to next command, then I need to use 'xargs'
-Ex: ls *.java | xargs rm
-This remove all the .java files from the directory.
+kill
+=============
+Foreground processes are one which can be killed by ctrl+c i.e. commands usually which I execute in terminal i.e tail -f
+The foreround process(tail -f) can be killed by ctrl+c.
 
+Background processes are basically the running programs/shell scripts & these cannot be killed by ctrl+c.
+To kill background process running i need to use 'kill' command.
 
-regex(regular expression)
-=============================================
-In the command arguments(not options) I can use the regex
+syntax : kill <PID1 PID2,...>
 
-1. '*' wildcard
----------------
-a. display all the files of .log extension
-ls -lrth *.logs
-
-b. diplay the files with names as translation with any extension 
-ls -lrth translation.*
-here '*' represents any character any number of times(0 times as well)
-
-2. '$' wildcard
-----------------
-display the .txt files whose name has only two characters & first character starts with a
-ls a$.txt
-here '$' represents any single character(mandatory)
-
-3. range operator
-----------------------
-a. display the files whose name starts with a or b or c 
-ls [abc]*
-
-b. display the files whose name does not starts with a or b or c 
-ls [!abc]*
-Note: Here i can use [!a]* as well
-
-c. ls [A-F]*
-- represents range
-here i can use any characters num, special characters & alpahets(U/L).
-
-
-4. 'or' operator
--------------------
-display all the files that have .java or .py extension
-
-ls -l *{.java,.py}
-
+Note:
+If I kill parent process, then child will also gets killed
 
 less
 =============================
@@ -149,7 +233,7 @@ options after doing less:
 How to search the required text after opening the displaying the file content
 -----------------------------------------------------------------------------
 For bottom to top search(Upward direction, preffered)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Type Shit+g
 - Type / to enter the search mode.
 - Then type the text to search & enter
@@ -169,10 +253,8 @@ For top to botton search(Downward direction)
 - :q : to quit the less
 
 Note:
-
 - Drawback of the less command is the matching text on which the current control is, that will not be highlighted, so vim command can be used to overcome this.
 - The 'more' command is also the same the  as 'less' command, but after doing more will be able to navigate only in the forward direction, not in the backward direction, so the 'more' command is generally not used
-
 
 vim
 ============
@@ -192,7 +274,7 @@ pg up
 
 Search
 ~~~~~~~~~~~~
-Bot to Up
+UP
 #############
 Shift+g
 /search text & Enter
@@ -201,10 +283,9 @@ n for next match(as per the timing)
 again /search for new search
 :q to quit
 
-
-Bot to Up
+DOWN
 #############
-gg
+gg with ?
 
 Edit
 ~~~~~~~~~~~
@@ -218,10 +299,62 @@ Note :
 - I can use :q! or :wq! to force the respective action.
 - It overcomes the drawback of current matching text highlight, which was found with less command.
 
+df(disk free)
+==============
+df command is used to display the disk space usage of the all the file systems avaliable.
+
+syntax:
+df [options]
+
+It works on system level not on the pwd level.
+
+- just df command will diplay the disk space usage of the all the file systems, where the data like size will not be in human readable format i.e. it will be in bytes.
+- df -h will display the disk space usage of the all the file systems in human readable format i.e. KB,MB & GB.
+
+
+regex(regular expression)
+=============================================
+In the command arguments(not options) I can use the regex
+
+1. '*' wildcard
+---------------
+a. display all the files of .log extension
+ls -lrth *.logs
+
+b. diplay the files with names as translation with any extension
+ls -lrth translation.*
+here '*' represents any character any number of times(0 times as well)
+
+2. '?' wildcard
+----------------
+display the .txt files whose name has only two characters & first character starts with a
+ls a?.txt
+here '?' represents any single character(mandatory)
+
+3. 'or' operator
+-------------------
+display all the files that have .java or .py extension
+
+ls -l *{.java,.py}
+
+Piping
+==================
+- Piping is concept by which I can pass the output from one command as an input to another command.
+- Multiple commands can be executed one after another by this piping concept.
+- '|' - Pipeline operator.
+
+Ex : tail -1000f abc.log | grep '9148632599'
+
+xargs
+-------
+If I want to pass the output received from one command as an argument(s) not as standard input to next command, then I need to use 'xargs'
+Ex: ls *.java | xargs rm
+This remove all the .java files from the directory.
+
 grep(global regular expression pattern)
 ============================================
 - It is used for patter matching
-- This command is used to search display the lines from the file content, which are the conaining the the specified pattern.
+- This command is used to search the required pattern in the file content & display the matching lines.
 
 grep 'XYZ' fileName
 
@@ -233,183 +366,40 @@ gerp -i 'XYZ' fileName
 
 matching multiple patterns
 ---------------------------
-egrep '(ABC|DEF)' fileName
+egrep 'ABC|DEF' fileName
 
 gerp command can be used with other commands when they are giving some output i.e. piping
 ------------------------------------------------------------------------------------------
-ls -lrth | grep 'ABC'
+ls -lrth | grep 'ABC' or tail -f ABC.log | grep '9148632599'
 
 also
 ls -lrth | grep '^ABC' to display the lines that starts with ABC
-ls -lrth | grep .'log$' to display the lines that ends with ABC
+ls -lrth | grep '.log$' to display the lines that ends with ABC
 ls -lrth | grep '^ABC*.log$' starts with ABC, inbetween any & ends with .log
 ls -lrth | grep '^ABC?.log$' ? IS USED
 
-Note : The search patter should be in quotes in grep command. even all the wildcards should be in quotes.
+Note : It is alaways suggested to use the search patter in quotes in grep command. even all the wildcards should be in quotes.
 
-date
-============
-This command is used to display the current date-time of the Linux machine
+re-direction
+=====================
+output re-direction
+----------------------
+ls 1>output.txt : override
+- here 1 represents output re-direction and here it is optional
 
-Syntax: date
+ls >>output.txt : appends
 
-ls(list)
-==================
-Options
----------
-- ls : To list the names of directories and files present in the working directory.
-- ls -l or ll : To long list the names of directories and files present in the working directory, along with premissions, users, groups, size(In Bytes), Moditication time ect..
-- ls -lh : The file/sub-directories sizes will be displayed in human readeable format i.e. KB, MB & GB.
-- ls -lth : The 't' option sorts the list/dir by modification time, with the newest files or directories appearing first.
-- ls-ltrh : lists/dir's files in reverse order of modification time with detailed information and human-readable file sizes
-
-Note :
-- ls - latrh : Includes hidden files as well.
-- The options used with ls need not to be in a particular order, any order is fine.
-
-I can used wild cards, but instaed of this grep is used along with ls -lrth)
-------------------------------------------------------------------
-ls -lrth *.java (* is any char, any times, it can be even emptys)
-ls -lrth *.lo? (? any single char, mandatory)
-
-
-rm(remove)
-=======================
-1. To remove files
-rm file1 file2 ...........
-
-2. To remove directory
-a. rm dir - To remove empty directory
-b. rm -r dir - To remove a directory with some content(files & subdirectories).
-
-Here 'r' is recursive
-
-mv(move)
-===============
-1. To rename files & directory
-mv file_oldname/dir_oldname file_newname/dir_newname
-
-2. To move files
-mv file1 file2 <Destination Dir>
-
-3. To move directoty
-mv scr_dir dist_dir
-
-Note : Here distination & source directory should exists. if not I will get "No such file or directory" error.
-
-cp(copy)
-===================
-1. Basically, it is used to copy file/s from one directory to another.
-cp file1.ext file2.ext <Destination Directory>
-
-2. To copy one dir into another
-cp -r dir1 dir2
-
-3. To copy the content of one file into another
-cp file1 file2(file 1 content will be copied to file2)(override)
-
-Note : If the distination file/directory doesn't exists & then cp command will create & do the other job. But source should be there.
-
-cat(catenate)
-==============================================
-
-1. To display the content of the file when the content is less if more other relevant command should be used.
-cat FileName.ext
-
-2. To concatenate & display the contents of the multiple files
-cat FileName.ext FileName.ext ......................
-
-touch
-==========================================
-This command is used to
-Create an empty file.
-
-Syntax : touch <FileName.ext>
-- It will create the file in the pwd, if the file is not present
-- If the file is already present then it will change the timestamp of the file.
-
-Note:
-- File names should not have space.
-- I can also create a hidden file, where the File-Name has to begin with. (Ex: .Demo.txt)
-
-clear
-=======================
-This command is used to clear the terminal screen
-
-Syntax: clear
+error re-direction
+---------------------
+cal 15 2023 2>error.txt 
+- here 2 represents error re-direction and here it is mandatory.
 
 Note: 
-- This will not delete the content in the terminal, it just moves the content up.
-- 'cls' command works in some terminals where it actually clears the contents on the screen only.
-
-systemctl
-===================
-The systemctl command is used to check & change the state of the system services.
-	
-
-Syntax:
-systemctl <Status/Start/Stop/Restart> <Service File Name>
-
-Note:
-- providing the extension i.e. .service along with the service file is not mandatory
-
-
-
-sudo(SuperUserDo)
-=================================
-It gives the temporary Superuser/root user access to perform restricted actions or access restricted files.
-
-Note: The error when a normal user tries to perform restricted action or access the restricted files is "Permission denied".
-
-syntax: sudo -s
-Example:
-Before: [centos@TSLEE-BE-02 ~]$
-After: [root@TSLEE-BE-02 centos]#
-
-Note:
-- $ represents normal user & # represents root/admin user
-- I need to use the 'exit' command to switch back to the previous user.
-- If I want to perform any action without switching to the root user, I Ian use 'sudo <mkdir sample>', then that action will be performed without the user switch.
-
-man
-================
-This command is used to display all the descriptions & options available with the specified Linux command.
-
-Syntax:
-man <Linux Command>
-
-
-ps(process)
-====================
-process is an instance of the running command or program.
-Note: - Foreground & Background processes in linux
-
-The ps command in Linux is used to provide information(PID) about currently running processes on the system
-syntax : ps -[options] [PID]
-
-Note: 
-- By default the ps command will display the running processes which are initaited by only current user.
-
-
-options
--------------
--e - used to display information(PID mainly) about running processes(initiated by all users)
--f - used to display information about running processes(initiated by current user) in a detailed format(PPID, CPU & memeory usage etc..)
-Note : ps PID :  will display information about specified process.
-
-
-kill
-=============
-The foreround process(tail -f) can be killed by ctrl+c, but to kill background process running i need to use 'kill' command.
-
-syntax : kill <PID1 PID2,...>
-
-Note: 
-If I kill parent process, then child will also gets killed
-
+- use '>' to override the existing data in file, if i want to append then I need to use '>>'.
+- I can combine like this ls 1>output.txt 2>error.txt
 
 roles & permissions
-=============================================================
+=====================
 There will be three types of roles in linux
 user(u)/owner (Person who creates)
 group(g) (All the people who are part of the group, in which owner is part of)
@@ -418,7 +408,7 @@ others(o) (All the other users)
 There will be three types of permission that each user can have
 Read (r): The read permission allows a user to view the contents of a file and list files/directories,
 write(w) : The write perrmission allows user to add, modify & delete the file & directories
-Execute (x): The execute permission is primarily associated with files and determines if the file can be executed as a program or script. For directories, the execute permission allows a user to access or traverse the directory. Without execute permission, a directory cannot be entered(cd command) even if the user has read or write permissions on it
+Execute (x): The execute permission is primarily associated with files and determines if the file can be executed as a program or script. For directories, the execute permission allows a user to access or traverse or enter the directory. Without execute permission, a directory cannot be entered(cd command) even if the user has read or write permissions on it.
 
 Ex : -rw-r-----    for user, groups & others
 
@@ -432,10 +422,9 @@ write : 2
 execute : 1
 so for 'rwxrw-r--' : 764
 
-
 chmod(change mode)
 ======================
-This command is used to change the access permissions of user for files & directories.
+This command is used to change the user permissions for file/directories.
 
 I can use chmod command in two ways
 a. Symbolic method
@@ -457,6 +446,7 @@ chmod u-x is also can be done
 
 Note : 
 - It's important to note that the provided command does not override existing permissions; instead, it adds or removes specific permissions.
+- I can even do like this u-x,o+x
 
 b. numeric method
 ------------------------
@@ -469,20 +459,6 @@ Here adding only read permissions to g & only read & execute permission to o.
 Ex3: chmod 700 <file/directory name>
 Here adding 7 & removing all permissions for g & o.
 
-Note: 
-- whenever i use the chmod command in numeric way the previous permissions will be overriden by the new permissions specified in the chmode command, but it is not in case of symbolic method
-- Every time we need to give all the three values it is suggested.
-
-df
-===
-df command is used to display the disk space usage of the all the file systems avaliable.
-
-syntax:
-df [options]
-
-It works on system level not on the pwd level.
-
-- just df command will diplay the disk space usage of the all the file systems, where the data like size will not be in human readable format i.e. it will be in bytes.
-- df -h will display the disk space usage of the all the file systems in human readable format i.e. KB,MB & GB.
-
-
+Note:
+- Specifying the number for all three users is mandatory.
+- whenever i use the chmod command in numeric way the previous permissions will be overriden by the new permissions specified in the chmode command, but it is not in case of symbolic method.
